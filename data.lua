@@ -1,4 +1,5 @@
 local rro = require("__planet-muluna__.lib.remove-replace-object")
+local asteroid_util = require("__space-age__.prototypes.planet.asteroid-spawn-definitions")
 local lonely_muluna =
 {
   order = "a",
@@ -50,5 +51,27 @@ muluna.localised_description = nil
 data.raw["space-connection"]["nauvis-muluna"].from = "fulgora"
 data.raw["space-connection"]["nauvis-muluna"].length = 42000
 data.raw["space-connection"]["nauvis-muluna"].asteroid_spawn_definitions = table.deepcopy(data.raw["space-connection"]["nauvis-corrundum"].asteroid_spawn_definitions)
+
+data:extend{{
+    type = "space-connection",
+    name = "muluna-solar-system-edge",
+    subgroup = "planet-connections",
+    from = "muluna",
+    to = "solar-system-edge",
+    order = "c",
+    length = 100000,
+    asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.aquilo_solar_system_edge)
+},
+
+{
+    type = "space-connection",
+    name = "muluna-maraxsis",
+    subgroup = "planet-connections",
+    from = "muluna",
+    to = "maraxsis",
+    order = "c",
+    length = 60000,
+    asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.gleba_aquilo)
+}}
 
 
