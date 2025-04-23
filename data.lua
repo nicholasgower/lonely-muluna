@@ -37,7 +37,7 @@ for _,autoplace in pairs(data.raw["autoplace-control"]) do
     end
 end
 
-data.raw["map-gen-presets"]["default"]["lonely-muluna"] = lonely_muluna
+data.raw["map-gen-presets"]["default"]["default"] = lonely_muluna
 --data.raw["map-gen-presets"]["default"]["default"].default = false
 --data.raw["map-gen-presets"]["default"]["default"].order = "aa"
 

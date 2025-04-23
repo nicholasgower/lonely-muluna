@@ -1,7 +1,37 @@
 local rro = require("__planet-muluna__.lib.remove-replace-object")
 local solar_multiplier = 1.5
 
-
+local function technology_icon_moon_complete(moon_icon, icon_size)
+	icon_size = icon_size or 256
+	local icons = util.technology_icon_constant_planet(moon_icon)
+    icons[3]=icons[2]
+    icons[2]=icons[1]
+    icons[1] = {
+        icon = "__muluna-graphics__/graphics/technology/planet-technology.png",
+        icon_size = 256,
+        shift = {0,10},
+    }
+	icons[2].icon_size = icon_size
+    icons[2].scale = 0.8*128/icon_size
+    icons[2].shift = {0,10}
+	--icons[3].icon = "__PlanetsLib__/graphics/icons/planet-technology-symbol.png"
+	-- End result is an icons object ressembling the following, as of 2.0.37. Future API changes might change this code,
+	-- which is why this function is written to reference the base function instead of copying it by hand.
+	-- local icons = {
+	-- 	{
+	-- 		icon = moon_icon,
+	-- 		icon_size = icon_size,
+	-- 	},
+	-- 	{
+	-- 		icon = "__PlanetsLib__/graphics/icons/moon-technology-symbol.png",
+	-- 		icon_size = 128,
+	-- 		scale = 0.5,
+	-- 		shift = { 50, 50 },
+	-- 		floating = true
+	-- 	},
+	-- }
+	return icons
+end
 
 
 
@@ -44,9 +74,14 @@ data.raw["technology"]["planet-discovery-fulgora"].icon_size = 512
 
 
 local fulgora = table.deepcopy(data.raw["planet"]["fulgora"])
+local gleba = data.raw["planet"]["gleba"]
 
+gleba.icon = "__lonely-muluna__/graphics/gleba.png"
+gleba.starmap_icon = "__lonely-muluna__/graphics/starmap-planet-gleba.png"
+gleba.localised_description = nil
 nauvis.surface_render_parameters = fulgora.surface_render_parameters
-
+gleba.surface_render_parameters = fulgora.surface_render_parameters
+gleba.lightning_properties = fulgora.lightning_properties
 fulgora.type = "space-location"
 
 fulgora.icon = "__lonely-muluna__/graphics/shattered-fulgora.png"
@@ -77,6 +112,9 @@ for _,tech in pairs(data.raw["technology"]) do
     
 end
 
+data.raw["recipe"]["lightning-rod"].surface_conditions = nil
+data.raw["recipe"]["lightning-collector"].surface_conditions = nil
+
 for _,prototype in pairs(data.raw) do
     
     for _,object in pairs(prototype) do
@@ -103,3 +141,120 @@ end
 
 data.raw["technology"]["rocket-part-productivity-fulgora"].localised_name={"",{"technology-name.rocket-part-productivity-fulgora"}," ",tostring(1)}
 data.raw["technology"]["rocket-part-productivity-fulgora-2"].localised_name={"",{"technology-name.rocket-part-productivity-fulgora"}," ",tostring(2)}
+table.insert(data.raw["technology"]["planet-discovery-gleba"].effects , 
+
+{
+    type = "unlock-recipe",
+    recipe = "lightning-rod"
+}
+
+
+)
+
+
+rro.remove(data.raw["technology"]["planet-discovery-fulgora"].effects , 
+
+{
+    type = "unlock-recipe",
+    recipe = "lightning-rod"
+}
+)
+
+
+
+data.raw["technology"]["planet-discovery-fulgora"].unit.count = 100
+-- local function switch(a,b)
+
+--     temp = table.deepcopy(a)
+--     a = table.deepcopy(b)
+--     b = temp
+-- end
+
+-- local function flip_name(input,a,b)
+
+-- if input == a then
+--      return b 
+--     elseif input == b then 
+--         return a
+--      else 
+--         return input
+
+--       end
+
+-- end
+
+-- local function recursive_correct(data,nauvis,muluna)
+--     --log(nauvis or "nil" .. ", " .. muluna or "nil" .. ", \n" .. serpent.block(data) or "nil")
+--     if type(data) == "table" then
+--         for key,entry in pairs(data) do
+--             entry = recursive_correct(entry,nauvis,muluna)
+--             data[key] = entry
+--         end
+--     else -- type(data) == "string" then
+--         return flip_name(data,nauvis,muluna)
+--     end
+    
+
+-- end
+
+-- local function switch_planets(nauvis,muluna)
+
+--     --recursive_correct(data.raw["space-connection"],nauvis,muluna)
+--     for _,connection in pairs(data.raw["space-connection"]) do
+--         connection.from = flip_name(connection.from,nauvis,muluna)
+--         connection.to = flip_name(connection.to,nauvis,muluna)
+--     end
+
+--     for _,technology in pairs(data.raw["technology"]) do
+
+--         if rro.contains(technology.effects,
+--         {
+--             type = "unlock-space-location",
+--             name = nauvis,
+--         }) then
+
+--             rro.replace(technology.effects,
+--             {
+--                 type = "unlock-space-location",
+--                 name = nauvis,
+--             },
+--             {
+--                 type = "unlock-space-location",
+--                 name = muluna,
+--             }
+--         )
+            
+--         elseif rro.contains(technology.effects,
+--         {
+--             type = "unlock-space-location",
+--             name = muluna,
+--         }) then
+--             rro.replace(technology.effects,
+--             {
+--                 type = "unlock-space-location",
+--                 name = muluna,
+--             },
+--             {
+--                 type = "unlock-space-location",
+--                 name = nauvis,
+--             }
+--         )
+--         end
+
+    
+--     end
+
+--     switch(data.raw["planet"][nauvis],data.raw["planet"][muluna])
+--     local nauvis_obj = table.deepcopy(data.raw["planet"][nauvis])
+--     local muluna_obj = table.deepcopy(data.raw["planet"][muluna])
+--     nauvis_obj.name = muluna
+--     muluna_obj.name = nauvis
+--     data:extend{nauvis_obj,muluna_obj}
+    
+    
+
+-- end
+
+-- switch_planets("nauvis","muluna")
+
+data.raw["technology"]["planet-discovery-fulgora"].icons = technology_icon_moon_complete("__lonely-muluna__/graphics/starmap-shattered-fulgora.png", 512)
