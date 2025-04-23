@@ -1,10 +1,10 @@
 {
-  "name": "[internal-mod-name]",
+  "name": "lonely-muluna",
   "version": "0.0.0",
-  "title": "[MOD DISPLAY NAME]",
-  "author": "[YOUR MODS.FACTORIO.COM USERNAME]",
-  "homepage": "[HOMEPAGE/REPO URL]",
-  "description": "[SHORT DESCRIPTION]",
+  "title": "Lonely Muluna",
+  "author": "MeteorSwarm",
+  "homepage": "https://discord.gg/gGKZ8fsbUM",
+  "description": "Placeholder mod",
   "factorio_version": "2.0",
   "dependencies": [
     "base"
