@@ -18,7 +18,10 @@
     "secretas",
     "Redrawn-Space-Connections",
     "! Rocs-Hardcore-Lightning-Storms",
-    "eradicators-hand-crank-redux"
+    "eradicators-hand-crank-redux",
+    "visible-planets",
+    "Aircraft-space-age",
+    "aai-signal-transmission"
   ],
   "quality_required": false,
   "rail_bridges_required": false,
