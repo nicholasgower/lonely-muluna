@@ -5,7 +5,7 @@
 
 A small Factorio Mod template which also contains GitHub Actions for automatic changelog generation, packaging and releasing to the [Factorio Mod Portal](https://mods.factorio.com)
 
-# How it works
+# How it works 
 
 This template uses [semantic-release](https://github.com/semantic-release/semantic-release) to automate the changelog generation aswell as packaging and releasing of the mod. \
 To achieve this it analyzes your commit messages to figure out what the new version should be and what to put into the changelog.
