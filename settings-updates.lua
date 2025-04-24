@@ -106,6 +106,8 @@ data:extend{{
 
 
 data.raw["string-setting"]["aps-planet"].hidden = true
+data.raw["string-setting"]["aps-planet"].allowed_values = {"muluna"}
+data.raw["string-setting"]["aps-planet"].default_value = "muluna"
 data.raw["string-setting"]["aps-planet"].forced_value = "muluna"
 -- {
 --   type = "double-setting",
