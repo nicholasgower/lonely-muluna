@@ -1,7 +1,7 @@
 local rro = require("__planet-muluna__.lib.remove-replace-object")
 local solar_multiplier = 1.5
 
-local function technology_icon_moon_complete(moon_icon, icon_size)
+local function technology_icon_moon_complete(moon_icon, icon_size,scale)
 	icon_size = icon_size or 256
 	local icons = util.technology_icon_constant_planet(moon_icon)
     icons[3]=icons[2]
@@ -12,7 +12,7 @@ local function technology_icon_moon_complete(moon_icon, icon_size)
         shift = {0,10},
     }
 	icons[2].icon_size = icon_size
-    icons[2].scale = 0.8*128/icon_size
+    icons[2].scale = scale*128/icon_size
     icons[2].shift = {0,10}
 	--icons[3].icon = "__PlanetsLib__/graphics/icons/planet-technology-symbol.png"
 	-- End result is an icons object ressembling the following, as of 2.0.37. Future API changes might change this code,
@@ -257,4 +257,6 @@ data.raw["technology"]["planet-discovery-fulgora"].unit.count = 100
 
 -- switch_planets("nauvis","muluna")
 
-data.raw["technology"]["planet-discovery-fulgora"].icons = technology_icon_moon_complete("__lonely-muluna__/graphics/starmap-shattered-fulgora.png", 512)
+data.raw["technology"]["planet-discovery-fulgora"].icons = technology_icon_moon_complete("__lonely-muluna__/graphics/starmap-shattered-fulgora.png", 512,0.8)
+data.raw["technology"]["planet-discovery-nauvis"].icons = technology_icon_moon_complete("__lonely-muluna__/graphics/starmap-planet-nauvis.png", 512,0.9)
+data.raw["technology"]["planet-discovery-gleba"].icons = technology_icon_moon_complete("__lonely-muluna__/graphics/starmap-planet-gleba.png", 512,0.9)
