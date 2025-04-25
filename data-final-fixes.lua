@@ -159,6 +159,22 @@ rro.remove(data.raw["technology"]["planet-discovery-fulgora"].effects ,
 
 
 data.raw["technology"]["planet-discovery-fulgora"].unit.count = 100
+
+
+
+
+
+data.raw["technology"]["steam-power"].prerequisites = {"metallic-asteroid-crushing"}
+data.raw["technology"]["steel-axe"].prerequisites = {"metallic-asteroid-crushing"}
+data.raw["technology"]["electronics"].prerequisites = {"muluna-aluminum-processing"}
+-- for _,tech in pairs(data.raw["technology"]) do
+--     if tech.unit then 
+--        if rro.contains(tech.unit.ingredients ,{"logistic-science-pack" , 1}) then
+--         rro.soft_insert(tech.prerequisites,"logistic-science-pack")
+--        end
+--     end
+        
+-- end
 -- local function switch(a,b)
 
 --     temp = table.deepcopy(a)
