@@ -3,7 +3,7 @@ local asteroid_util = require("__space-age__.prototypes.planet.asteroid-spawn-de
 local lonely_muluna =
 {
   order = "a",
-  --default = true,
+  default = false,
   basic_settings =
   {
     --property_expression_names = {},
@@ -37,8 +37,13 @@ for _,autoplace in pairs(data.raw["autoplace-control"]) do
         lonely_muluna.basic_settings.autoplace_controls[autoplace.name] = {richness = 0.5}
     end
 end
+data:extend{{
+    type = "map-gen-presets",
+    name = "default",
+    default = lonely_muluna
+}}
 
-data.raw["map-gen-presets"]["default"]["default"] = lonely_muluna
+-- data.raw["map-gen-presets"]["default"] = {default = lonely_muluna}
 --data.raw["map-gen-presets"]["default"]["default"].default = false
 --data.raw["map-gen-presets"]["default"]["default"].order = "aa"
 
