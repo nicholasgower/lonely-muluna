@@ -74,4 +74,14 @@ data:extend{{
     asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.gleba_aquilo)
 }}
 
+local nauvis = data.raw["planet"]["nauvis"]
+local gleba = data.raw["planet"]["gleba"]
+local fulgora = data.raw["planet"]["fulgora"]
+
+nauvis.icon = "__lonely-muluna__/graphics/nauvis.png"
+nauvis.starmap_icon = "__lonely-muluna__/graphics/starmap-planet-nauvis.png"
+gleba.icon = "__lonely-muluna__/graphics/gleba.png"
+gleba.starmap_icon = "__lonely-muluna__/graphics/starmap-planet-gleba.png"
+fulgora.icon = "__lonely-muluna__/graphics/shattered-fulgora.png"
+fulgora.starmap_icon = "__lonely-muluna__/graphics/starmap-shattered-fulgora.png"
 

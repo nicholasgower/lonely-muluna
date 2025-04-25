@@ -62,8 +62,7 @@ end
 
 
 
-nauvis.icon = "__lonely-muluna__/graphics/nauvis.png"
-nauvis.starmap_icon = "__lonely-muluna__/graphics/starmap-planet-nauvis.png"
+
 nauvis.localised_description = nil
 data.raw["technology"]["planet-discovery-fulgora"].icon = "__lonely-muluna__/graphics/starmap-shattered-fulgora.png"
 data.raw["technology"]["planet-discovery-fulgora"].icon_size = 512
@@ -76,16 +75,13 @@ data.raw["technology"]["planet-discovery-fulgora"].icon_size = 512
 local fulgora = table.deepcopy(data.raw["planet"]["fulgora"])
 local gleba = data.raw["planet"]["gleba"]
 
-gleba.icon = "__lonely-muluna__/graphics/gleba.png"
-gleba.starmap_icon = "__lonely-muluna__/graphics/starmap-planet-gleba.png"
+
 gleba.localised_description = nil
 nauvis.surface_render_parameters = fulgora.surface_render_parameters
 gleba.surface_render_parameters = fulgora.surface_render_parameters
 gleba.lightning_properties = fulgora.lightning_properties
 fulgora.type = "space-location"
 
-fulgora.icon = "__lonely-muluna__/graphics/shattered-fulgora.png"
-fulgora.starmap_icon = "__lonely-muluna__/graphics/starmap-shattered-fulgora.png"
 
 data:extend{fulgora}
 
