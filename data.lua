@@ -54,7 +54,7 @@ muluna.solar_power_in_space = 60
 muluna.localised_description = nil
 
 data.raw["space-connection"]["nauvis-muluna"].from = "fulgora"
-data.raw["space-connection"]["nauvis-muluna"].length = 42000
+data.raw["space-connection"]["nauvis-muluna"].length = 75000
 data.raw["space-connection"]["nauvis-muluna"].asteroid_spawn_definitions = table.deepcopy(data.raw["space-connection"]["nauvis-corrundum"].asteroid_spawn_definitions)
 
 data:extend{{
@@ -75,7 +75,7 @@ data:extend{{
     from = "muluna",
     to = "maraxsis",
     order = "c",
-    length = 60000,
+    length = 90000,
     asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.gleba_aquilo)
 }}
 
