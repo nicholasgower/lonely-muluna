@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.3
+Date: 2025-04-27
+  Bugfixes:
+    - Added electric resistance to Gleba plants to prevent lightning from destroying all of them.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.2
 Date: 2025-04-27
   Bugfixes:
