@@ -13,9 +13,9 @@ script.on_event(defines.events.on_surface_created, function(event)
     --if surface.name == TENEBRIS then
         --surface.freeze_daytime = true
         --surface.daytime = 0.35
-        game.forces["enemy"].set_evolution_factor(0.95, surface)
+        game.forces["enemy"].set_evolution_factor_by_time(0.95, surface)
         if surface.name == "muluna" then
-            game.forces["enemy"].set_evolution_factor(0.95, "nauvis")
+            game.forces["enemy"].set_evolution_factor_by_time(0.95, "nauvis")
         end
         if not storage.respawn_location then storage.respawn_location = {} end
     --end
