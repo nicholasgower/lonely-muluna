@@ -119,7 +119,7 @@ for _,prototype in pairs(data.raw) do
         --end
         if object.surface_conditions then
             for i,condition in ipairs(object.surface_conditions) do
-                if condition.property == "magnetic-field" then
+                if condition.property == "magnetic-field" and #object.surface_conditions == 1 then
                     table.remove(object.surface_conditions,i)
                     table.insert(object.surface_conditions,
                         {
