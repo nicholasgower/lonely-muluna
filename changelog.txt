@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.5
+Date: 2025-04-28
+  Bugfixes:
+    - Changed surface condition changes to only apply if magnetic field is the only property in the condition list.
+    - Unhid per-user mod settings.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.4
 Date: 2025-04-27
   Bugfixes:
