@@ -42,5 +42,5 @@ end
 
 -- }
 
-
+data.raw["technology"]["rail-support-foundations"] = nil
 
