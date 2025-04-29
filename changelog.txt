@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.6
+Date: 2025-04-29
+  Bugfixes:
+    - Deleted rail-support-foundations technology, because the lack of deep oil tiles on Fulgora or anywhere else makes the technology irrelevant.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.5
 Date: 2025-04-28
   Bugfixes:
