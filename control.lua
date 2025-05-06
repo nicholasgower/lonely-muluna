@@ -9,7 +9,7 @@ script.on_init(init)
 --/c __lonely-muluna__ storage.respawn_location = {}
 script.on_event(defines.events.on_surface_created, function(event)
     local surface = game.surfaces[event.surface_index]
-    assert(game.is_multiplayer(),"This version of Lonely Muluna can only be played in Multiplayer. Play at https://getcomfy.eu")
+    --assert(game.is_multiplayer(),"This version of Lonely Muluna can only be played in Multiplayer. Play at https://getcomfy.eu")
     --if surface.name == TENEBRIS then
         --surface.freeze_daytime = true
         --surface.daytime = 0.35
