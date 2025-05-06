@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.7
+Date: 2025-05-06
+  Compatibility:
+    - Removed restriction on playing scenario in singleplayer.
+  Bugfixes:
+    - Removed Maraxsis mod in attempt to fix desync issue.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.6
 Date: 2025-04-29
   Bugfixes:
