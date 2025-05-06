@@ -68,16 +68,20 @@ data:extend{{
     asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.aquilo_solar_system_edge)
 },
 
-{
-    type = "space-connection",
-    name = "muluna-maraxsis",
-    subgroup = "planet-connections",
-    from = "muluna",
-    to = "maraxsis",
-    order = "c",
-    length = 90000,
-    asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.gleba_aquilo)
-}}
+}
+
+if mods["maraxsis"] then
+    data:extend{{
+        type = "space-connection",
+        name = "muluna-maraxsis",
+        subgroup = "planet-connections",
+        from = "muluna",
+        to = "maraxsis",
+        order = "c",
+        length = 90000,
+        asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.gleba_aquilo)
+    }}
+end
 
 local nauvis = data.raw["planet"]["nauvis"]
 local gleba = data.raw["planet"]["gleba"]
