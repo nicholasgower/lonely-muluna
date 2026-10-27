@@ -59,8 +59,8 @@ data:extend{{
     hidden = true,
     default_value = 2,
     forced_value = 2,
-    min = 1,
-    max = 10,
+    minimum_value = 1,
+    maximum_value = 10,
     order = "ca",
   },
   {
@@ -70,8 +70,8 @@ data:extend{{
     hidden = true,
     default_value = 7,
     forced_value = 7,
-    min = 0.01,
-    max = 60,
+    minimum_value = 0.01,
+    maximum_value = 60,
     order = "cb",
   },
 --   {

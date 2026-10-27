@@ -26,7 +26,10 @@ script.on_event(defines.events.on_player_respawned, function(event)
     --game.print("player died")
     --init_storage()
     --if storage.respawn_location[event.player_index] then
-        game.players[event.player_index].teleport({0,0},"muluna")
+        game.players[event.player_index].teleport{
+            position = {0, 0},
+            surface = "muluna",
+        }
         --storage.respawn_location[event.player_index] = nil
     --end
     

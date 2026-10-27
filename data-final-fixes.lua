@@ -91,7 +91,10 @@ data:extend{fulgora}
 --         vp_override_planet_sprite("fulgora", "__core__/graphics/icons/starmap-shattered-fulgora.png", 512)
 --     --end
 -- end
-data.raw["technology"]["recycling"].research_trigger.entity = "scrap"
+data.raw["technology"]["recycling"].research_trigger = {
+    type = "mine-entity",
+    entities = {"scrap"},
+}
 data.raw["technology"]["recycling"].prerequisites = {"planet-discovery-nauvis"}
 
 
@@ -135,8 +138,20 @@ for _,prototype in pairs(data.raw) do
     end
 end
 
-data.raw["technology"]["rocket-part-productivity-fulgora"].localised_name={"",{"technology-name.rocket-part-productivity-fulgora"}," ",tostring(1)}
-data.raw["technology"]["rocket-part-productivity-fulgora-2"].localised_name={"",{"technology-name.rocket-part-productivity-fulgora"}," ",tostring(2)}
+-- Factorio 2.1 / planet-muluna 2.8 no longer define the Fulgora-specific
+-- rocket-part-productivity technologies. Keep the rename when present, but do
+-- not require them.
+for level, technology_name in ipairs({"rocket-part-productivity-fulgora", "rocket-part-productivity-fulgora-2"}) do
+    local technology = data.raw["technology"][technology_name]
+    if technology then
+        technology.localised_name = {
+            "",
+            {"technology-name.rocket-part-productivity-fulgora"},
+            " ",
+            tostring(level),
+        }
+    end
+end
 table.insert(data.raw["technology"]["planet-discovery-gleba"].effects , 
 
 {

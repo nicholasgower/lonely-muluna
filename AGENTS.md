@@ -33,7 +33,7 @@ files as the source of truth.
 so it can assume planet-muluna's prototypes and libraries exist. The reverse is
 not true.
 
-It currently depends directly on:
+It currently declares these dependencies:
 
 - `planet-muluna` — the planet, its prototypes, and shared libraries.
 - `muluna-graphics` — technology/planet artwork.
@@ -43,8 +43,9 @@ It currently depends directly on:
 - `corrundum`, `secretas` — additional planets/space locations used by the pack
   (`solar-system-edge` comes from Secretas).
 - `Redrawn-Space-Connections` — space-connection lengths.
-- `eradicators-hand-crank-redux` — supplies the `er-hcg` recipe that `data.lua`
-  rewrites.
+- `eradicators-hand-crank-redux` — optional; supplies the `er-hcg` recipe that
+  `data.lua` rewrites. The published 3.0.0 release is Factorio 2.0-only, so it
+  cannot be a hard dependency on 2.1.
 - `aai-signal-transmission` — server pack requirement.
 - `Rocs-Hardcore-Lightning-Storms` is explicitly incompatible (`!` dependency).
 
@@ -56,8 +57,9 @@ Important consequences:
 - Many dependencies are **load-bearing even if their names never appear in the
   Lua source**. Do not prune dependencies because `grep` finds no use.
 - The scenario patches dependency prototypes **by name** (`fulgora`, `gleba`,
-  `er-hcg`, `aps-planet`, `rail-support-foundations`, ...). A rename or removal in
-  an upstream mod is a load-time crash here.
+  `aps-planet`, `rail-support-foundations`, ...). A rename or removal in an
+  upstream mod is a load-time crash here. The `er-hcg` patch is the exception: it
+  is guarded because that mod is optional.
 - `data-final-fixes` is **not globally last**. A mod that depends on
   `lonely-muluna` can run its own final fixes afterwards. Use the data-stage probe
   when a patch appears to be missing or overwritten.
@@ -66,16 +68,21 @@ Important consequences:
 
 These are active obstacles, not historical trivia:
 
-- **Factorio version mismatch.** `info.json` declares `"factorio_version": "2.0"`,
-  while current planet-muluna releases require Factorio 2.1. Factorio 2.1 refuses
-  to load a mod that declares 2.0. Until the port lands, data-stage probes and
-  in-game tests on a 2.1 install fail at the version check.
-- **`data-updates.lua` uses a bare `rro` global.** Current planet-muluna exposes
-  the helper as `Muluna.rro` and as
+- **The mod targets Factorio 2.1.23.** `info.json` declares
+  `"factorio_version": "2.1"` and `base >= 2.1.23`. The code also requires
+  `planet-muluna >= 2.8.0` and `PlanetsLib >= 2.4.0`; the remaining dependency
+  floors pin the tested 2.1 releases. Do not lower those floors without testing
+  the data stage against the older releases.
+- **`data-updates.lua` and `data-final-fixes.lua` require `rro` explicitly.**
+  planet-muluna exposes the helper as `Muluna.rro` and as
   `require("__planet-muluna__.lib.remove-replace-object")`; it does not create a
-  global `rro`. When touching that file, add
-  `local rro = require("__planet-muluna__.lib.remove-replace-object")` and verify
-  the data stage.
+  global `rro`. Keep the explicit local require in both files.
+- **The hand-crank dependency is optional and currently 2.0-only.**
+  `eradicators-hand-crank-redux` 3.0.0 declares `factorio_version: "2.0"`, which
+  Factorio 2.1 refuses to load. `info.json` therefore declares it optional, and
+  `data.lua` guards the `er-hcg` patch. A 2.1-compatible fork can still be
+  installed and will receive the cheap starter recipe; do not make it a hard
+  dependency again until such a release exists.
 - **`control.lua` has no `on_init` handler.** The `init` function is commented
   out, so `script.on_init(init)` registers `nil`. This is legal and simply means
   `storage` is initialized lazily in `on_surface_created`; do not assume an init
@@ -85,11 +92,35 @@ These are active obstacles, not historical trivia:
 - **The dev tooling is copied from planet-muluna.** Only part of it applies; see
   [Verification and tooling](#verification-and-tooling).
 
+### Factorio 2.1-specific changes to preserve
+
+These are easy to accidentally revert while editing:
+
+- Technology research triggers use
+  `{type = "mine-entity", entities = {"scrap"}}`. The old 2.0 `entity` field is
+  invalid in 2.1.
+- Recipe categories use `categories = {...}`. `category` and
+  `additional_categories` are invalid in 2.1.
+- `LuaControl::teleport` takes named parameters in the current API. Use
+  `player.teleport{position = {0, 0}, surface = "muluna"}`; the old positional
+  call would pass the position table as `build_check_type`.
+- Numeric settings use `minimum_value` and `maximum_value`, not `min`/`max`.
+- Space locations have an `origin` field in 2.1. `PlanetsLib:update` converts
+  orbit data to the new origin format during `data-final-fixes`, so keep the
+  `PlanetsLib` dependency at `>= 2.4.0`.
+- Fulgora's old `rocket-part-productivity-fulgora` technologies no longer exist
+  in the 2.1 dependency set. The rename code in `data-final-fixes.lua` is guarded
+  and must stay optional.
+- Redrawn-Space-Connections rebuilds and renames connections during
+  `data-final-fixes`. The source patch targets `nauvis-muluna`, but the final
+  prototype is usually `muluna-fulgora`; assert against the data dump rather than
+  the intermediate name.
+
 ## Repository layout
 
 ```text
 info.json                 Mod metadata + dependency list (source of truth for version)
-data.lua                  data stage: preset, space connections, er-hcg, icons
+data.lua                  data stage: preset, space connections, optional er-hcg, icons
 data-updates.lua          data-updates stage: Muluna orbit, plant resistance, tech removal
 data-final-fixes.lua      data-final-fixes stage: solar, Fulgora conversion, tech rewrites
 settings-updates.lua      settings-updates stage: adds/forces scenario settings
@@ -135,8 +166,8 @@ sees settings defined by dependencies first.
 - **`data.lua`** replaces the `default` map-gen preset with the single
   `[planet=muluna] Lonely Muluna` entry and sets richness `0.5` for every
   resource autoplace control not in `muluna_resources`; rewrites and enables the
-  `er-hcg` recipe; re-orbits/retargets space connections; swaps Nauvis/Gleba/
-  Fulgora icons.
+  `er-hcg` recipe when that optional mod is present; re-orbits/retargets space
+  connections; swaps Nauvis/Gleba/Fulgora icons.
 - **`data-updates.lua`** moves Muluna's orbit to the star (`PlanetsLib:update`),
   gives yumako trees and jellystems 100% electric resistance, and deletes
   `rail-support-foundations` because the pack has no deep-oil tiles for it.
@@ -166,11 +197,13 @@ Keep these behaviors in mind before "fixing" what looks odd:
 
 ### Space and planets
 
-- `data.lua` retargets the `nauvis-muluna` connection to Fulgora, lengthens it to
-  75,000, and copies Corrundum's asteroid definitions, so that route now leads to
-  the Shattered Fulgora space location.
-- A `muluna-solar-system-edge` connection (100,000) is added to Secretas's
-  `solar-system-edge`.
+- `data.lua` retargets the `nauvis-muluna` connection to Fulgora, requests a
+  length of 75,000, and copies Corrundum's asteroid definitions, so that route
+  now leads to the Shattered Fulgora space location. Redrawn-Space-Connections
+  later rebuilds and rescales the edge; the final prototype is normally
+  `muluna-fulgora`, and its length is derived from orbital positions.
+- A `muluna-solar-system-edge` connection (requested length 100,000) is added to
+  Secretas's `solar-system-edge`; Redrawn may rescale it as well.
 - If Maraxsis is installed, a 90,000-length `muluna-maraxsis` connection is added.
 - Fulgora is **converted from a planet into a `space-location`** and then removed
   from `data.raw.planet`. After `data-final-fixes`, `data.raw.planet.fulgora` is
@@ -218,8 +251,8 @@ Keep these behaviors in mind before "fixing" what looks odd:
   ```lua
   local rro = require("__planet-muluna__.lib.remove-replace-object")
   ```
-  Do not rely on a global `rro`. `data-final-fixes.lua` already uses the explicit
-  require; `data-updates.lua` still needs fixing.
+  Do not rely on a global `rro`. Both `data-updates.lua` and
+  `data-final-fixes.lua` use the explicit require.
 - Prefer `rro.soft_insert`, `rro.replace`, and `rro.remove` over raw
   `table.insert`/`table.remove` on shared lists. Duplicate ingredients,
   prerequisites, or technology effects break the tech tree.
@@ -290,8 +323,7 @@ checks plus loading the mod.
   tools/ci/lua-check.sh --all
   ```
   This uses `luac5.2` when available and also runs `git diff --check`.
-- Data-stage probe, once the 2.1 metadata is fixed and the full dependency set is
-  installed:
+- Data-stage probe with a matching 2.1 pack:
   ```sh
   python3 tools/factorio_probe.py dump --add-mod .
   ```
@@ -387,8 +419,8 @@ fix: Added electric resistance to Gleba plants to prevent lightning from destroy
   Factorio mod portal using `FACTORIO_TOKEN`. The configured `build` agent denies
   `git push`.
 - Internal documentation and agent-guidance changes are not player-facing. Use a
-  plain subject such as `Document the 2.1 port blockers.` rather than a recognized
-  type, so the changelog does not gain a noise entry.
+  plain subject such as `Document the scenario verification steps.` rather than a
+  recognized type, so the changelog does not gain a noise entry.
 - If you open a pull request, describe what you actually tested and do not check
   boxes for work that was not done. AI-generated pull requests should be marked
   `(AI-generated)` in the title and signed with the model name in the body.

@@ -24,12 +24,17 @@ local muluna_resources = {
     "uranium-ore",
 }
 
-data.raw["recipe"]["er-hcg"].ingredients = {
-    {type = "item", name = "iron-plate", amount = 10},
-    {type = "item", name = "iron-gear-wheel", amount = 5},
-    {type = "item", name = "electronic-circuit", amount = 2},
-}
-data.raw["recipe"]["er-hcg"].enabled = true
+-- eradicators-hand-crank-redux is optional: its published release is still
+-- Factorio 2.0-only. Apply the scenario's cheap starter recipe when a compatible
+-- build (or a future 2.1 fork) is installed.
+if data.raw["recipe"]["er-hcg"] then
+    data.raw["recipe"]["er-hcg"].ingredients = {
+        {type = "item", name = "iron-plate", amount = 10},
+        {type = "item", name = "iron-gear-wheel", amount = 5},
+        {type = "item", name = "electronic-circuit", amount = 2},
+    }
+    data.raw["recipe"]["er-hcg"].enabled = true
+end
 --data.raw["technology"]["er-hcg-technology"] = nil
 
 for _,autoplace in pairs(data.raw["autoplace-control"]) do 

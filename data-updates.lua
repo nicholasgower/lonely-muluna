@@ -1,3 +1,5 @@
+local rro = require("__planet-muluna__.lib.remove-replace-object")
+
 PlanetsLib:update{
     name = "muluna",
     type = "planet",
