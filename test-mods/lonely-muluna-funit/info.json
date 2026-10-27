@@ -1,0 +1,29 @@
+{
+  "name": "lonely-muluna-funit",
+  "version": "0.0.1",
+  "title": "Lonely Muluna FUnit test suite",
+  "author": "MeteorSwarm",
+  "description": "Development-only FUnit data fixtures and scenario for lonely-muluna. Not shipped with the mod.",
+  "factorio_version": "2.1",
+  "dependencies": [
+    "base >= 2.1.23",
+    "space-age",
+    "lonely-muluna",
+    "funit",
+    "planet-muluna >= 2.8.0",
+    "PlanetsLib >= 2.4.0",
+    "muluna-graphics >= 1.1.19",
+    "enhanced-shadows >= 1.0.6",
+    "any-planet-start >= 1.2.0",
+    "corrundum >= 1.0.50",
+    "secretas >= 1.0.38",
+    "Redrawn-Space-Connections >= 2.5.2",
+    "aai-signal-transmission >= 0.6.0",
+    "alien-biomes-graphics >= 0.7.0",
+    "flib",
+    "bplib >= 2.1.3",
+    "space-exploration-graphics",
+    "space-exploration-graphics-4",
+    "space-exploration-graphics-5"
+  ]
+}

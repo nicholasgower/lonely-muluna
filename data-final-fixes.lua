@@ -53,7 +53,7 @@ local nauvis_map_gen = data.raw["planet"]["nauvis"].map_gen_settings
 nauvis_map_gen.autoplace_controls["trees"] = nil
 nauvis_map_gen.autoplace_controls["water"] = nil
 nauvis_map_gen.autoplace_controls["scrap"] = {}
-nauvis_map_gen.autoplace_settings["entity"]["scrap"] = {}
+nauvis_map_gen.autoplace_settings["entity"]["settings"]["scrap"] = {}
 for key,tile in pairs(nauvis_map_gen.autoplace_settings.tile.settings) do
     if string.find(key,"grass") then
         nauvis_map_gen.autoplace_settings.tile.settings[key] = nil

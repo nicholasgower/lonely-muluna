@@ -87,8 +87,10 @@ These are active obstacles, not historical trivia:
   out, so `script.on_init(init)` registers `nil`. This is legal and simply means
   `storage` is initialized lazily in `on_surface_created`; do not assume an init
   callback exists.
-- **No tests, migrations, or `api.lua`/`settings.lua`.** There is no FUnit suite
-  here. Do not import planet-muluna test instructions wholesale.
+- **Tests live in `test-mods/lonely-muluna-funit/`.** The FUnit companion mod is
+  development-only and export-ignored. There are no migrations or
+  `api.lua`/`settings.lua`; do not import planet-muluna test instructions
+  wholesale.
 - **The dev tooling is copied from planet-muluna.** Only part of it applies; see
   [Verification and tooling](#verification-and-tooling).
 
@@ -129,15 +131,19 @@ control.lua               Runtime stage: evolution pressure and Muluna respawn
 locale/<lang>/locale.cfg  Translations (en is authoritative)
 graphics/                 Runtime PNGs plus XCF sources (XCFs are export-ignored)
 tools/                    Development helpers, mostly copied from planet-muluna
-.github/workflows/        Release workflow (semantic-release)
+test-mods/lonely-muluna-funit/  FUnit data fixtures, scenario, and runtime tests
+.github/workflows/        Release and FUnit workflows
+.github/funit/            Vendored/adapted FUnit CI helpers
 .releaserc                Commit types, changelog sections, release plugins
 .gitattributes            Release-zip export rules
 opencode.json             OpenCode agent config copied from planet-muluna
 ```
 
-There is no `prototypes/`, `lib/`, `scripts/`, `compat/`, or `migrations/`
-directory. Everything runtime-relevant is in the root stage files unless you
-deliberately add a new module.
+Production code has no `prototypes/`, `lib/`, `scripts/`, `compat/`, or
+`migrations/` directory. Everything runtime-relevant is in the root stage files
+unless you deliberately add a new module. The `test-mods/lonely-muluna-funit/`
+tree has its own `lib/`, `prototypes/`, `scenarios/`, and `tests/` for the FUnit
+suite only.
 
 ## The Factorio load stages
 
@@ -312,11 +318,37 @@ Keep these behaviors in mind before "fixing" what looks odd:
 
 ## Verification and tooling
 
-There is **no automated test suite in this repository**. Verification is static
-checks plus loading the mod.
+There **is** an FUnit suite in `test-mods/lonely-muluna-funit/`. It runs
+automatically on every push via `.github/workflows/funit.yml` and can be run
+locally:
+
+```sh
+test-mods/lonely-muluna-funit/run.sh
+```
+
+The suite has:
+
+- Data-stage fixtures in `prototypes/fixtures/` that inspect the final prototype
+  set after lonely-muluna's `data-final-fixes`.
+- Runtime tests in `tests/suites/` that inspect the scenario's planets, surface,
+  settings, and the `on_surface_created` handler.
+- A result bag (`lonely-muluna-funit-results`) that carries data-stage failures
+  into the FUnit runtime report.
+
+The CI workflow needs the `FACTORIO_PLAYER_TOKEN` repository secret (a Factorio
+*player* token, not the mod-portal upload key) to download dependency mods.
+`FACTORIO_USERNAME` is optional and falls back to `MeteorSwarm`.
 
 ### What works here
 
+- Run the full FUnit suite:
+  ```sh
+  test-mods/lonely-muluna-funit/run.sh
+  ```
+  The runner links the current worktree, the companion test mod, and the local
+  dependency pack, starts the `__funit__lonely_muluna` scenario headlessly, and
+  exits non-zero on any FUnit `FAILURE` or `ERROR`. The report is written to
+  `/tmp/opencode/lonely-muluna-funit/write-data/script-output/funit-report-lonely-muluna.json`.
 - Syntax-check changed Lua and whitespace:
   ```sh
   tools/ci/lua-check.sh
@@ -347,9 +379,9 @@ checks plus loading the mod.
 The `tools/` tree is a copy of planet-muluna's development tooling. These scripts
 assume planet-muluna's layout and will fail or report irrelevant problems:
 
-- `tools/ci/funit.sh` and `tools/ci/funit-seams-check.sh` need
-  `test-mods/planet-muluna-funit/` and `scripts/funit.lua`, which do not exist
-  here.
+- `tools/ci/funit.sh` and `tools/ci/funit-seams-check.sh` are planet-muluna's
+  helpers and need `test-mods/planet-muluna-funit/` and `scripts/funit.lua`,
+  which do not exist here. Use `test-mods/lonely-muluna-funit/run.sh` instead.
 - `tools/ci/export-check.sh` expects planet-muluna runtime files (`api.lua`,
   `settings.lua`) and planet-muluna's export boundary. It currently reports this
   repo's layout as a failure.
@@ -433,9 +465,10 @@ fix: Added electric resistance to Gleba plants to prevent lightning from destroy
   loops, deleted Fulgora planet, and commented-out alternatives.
 - Do not prune dependencies, delete graphics sources, or remove "unused" code
   without tracing its effect through the full pack.
-- `AGENTS.md`, `tools/`, and `opencode.json` are development-only. If they are
-  committed, add matching `export-ignore` rules to `.gitattributes`; the release
-  zip is built with `git archive`. Use recursive patterns such as `tools/**`.
+- `AGENTS.md`, `tools/`, `test-mods/`, `.github/`, and `opencode.json` are
+  development-only and are marked `export-ignore` in `.gitattributes`; the
+  release zip is built with `git archive`. Use recursive patterns such as
+  `tools/**` and `test-mods/**`.
 - Do not commit `tools/__pycache__/`, `.zip` artifacts, `.env` files, or other
   local build output.
 - When in doubt about upstream behavior, consult planet-muluna's `AGENTS.md` and
